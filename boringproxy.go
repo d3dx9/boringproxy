@@ -195,6 +195,20 @@ func Listen() {
 	tlsConfig := &tls.Config{
 		GetCertificate: certConfig.GetCertificate,
 		NextProtos:     []string{"h2", "acme-tls/1"},
+		CipherSuites: []uint16{
+		    tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+		    tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+		    tls.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+		    tls.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+		    tls.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,
+		    tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,
+		},
+		PreferServerCipherSuites: true,
+		MinVersion:               tls.VersionTLS12,
+		CurvePreferences: []tls.CurveID{
+		   tls.CurveP256,
+		   tls.X25519,
+		},
 	}
 	tlsListener := tls.NewListener(httpListener, tlsConfig)
 
